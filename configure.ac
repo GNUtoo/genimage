@@ -73,6 +73,28 @@ AS_IF([test "x${enable_debug}" = "xyes"],
 	enable_hide=no],
 	[AC_MSG_RESULT([${enable_hide}])])
 
+AC_ARG_WITH([shell],
+	[AS_HELP_STRING([--with-shell],
+		[default shell to execute commands @<:@default=/bin/sh@:>@])],
+	[],
+	[
+		if test "$cross_compiling" = yes; then
+			AC_MSG_ERROR([--with-shell=... must be used to specify a shell that supports `-o pipefail` when cross compiling])
+		else
+			for shell in /bin/sh /bin/bash; do
+				if "${shell}" -o pipefail -c true > /dev/null 2>&1; then
+					with_shell="${shell}"
+					break
+				fi
+			done
+			if test "x${with_shell}" = "x"; then
+				AC_MSG_ERROR([No working shell found use --with-shell=... to specify a shell that supports `-o pipefail`])
+			fi
+		fi
+	 ])
+
+AC_DEFINE_UNQUOTED([GENIMAGE_SHELL], ["${with_shell}"],[Default shell])
+
 # ----------- autodetect some settings -------------------
 
 # add as much warnings and features as possible, but check what the compiler
@@ -147,4 +169,5 @@ AC_MSG_RESULT([
         debug:                  ${enable_debug}
         hide symbols:           ${enable_hide}
         libconfuse:             ${CONFUSE_LIBS}
+	default shell:          ${with_shell}
 ])
