@@ -143,6 +143,11 @@ test_expect_success "custom" "
 	echo 'Hello genimage!' > images/test.custom.expect &&
 	test_cmp images/test.custom.expect images/test.custom
 "
+
+test_expect_success "pipefail" "
+	test_must_fail run_genimage pipefail.config
+"
+
 test_expect_success "disable random-seed" "
 	extra_opts="--randomseed=" &&
 	run_genimage randomseed.config randomseed.img &&

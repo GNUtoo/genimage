@@ -151,6 +151,7 @@ EXTRA_DIST += \
 	test/mke2fs.1.dump \
 	test/mke2fs.2.dump \
 	test/mke2fs.3.dump \
+	test/pipefail.config \
 	test/qemu.config \
 	test/qemu.qcow.gz \
 	test/randomseed.config \
